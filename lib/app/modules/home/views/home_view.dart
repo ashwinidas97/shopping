@@ -14,10 +14,11 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     Get.put(HomeController());
-  
+    controller.onInit();
+
     return SafeArea(
       child: Scaffold(
-       // backgroundColor: Colors.black,
+        // backgroundColor: Colors.black,
         body: SizedBox(
           width: MediaQuery.of(context).size.width > 1200
               ? MediaQuery.of(context).size.width * 0.3
@@ -36,15 +37,23 @@ class HomeView extends GetView<HomeController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Hello Ashwini',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
+                        FutureBuilder(
+                            future: controller.featchName(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else {
+                                return Text(
+                                  "Hello, ${snapshot.data!.name}",
+                                  style: GoogleFonts.lobster(
+                                    fontSize: 25,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                );
+                              }
+                            }),
                         const SizedBox(
                           height: 2,
                         ),
@@ -88,11 +97,11 @@ class HomeView extends GetView<HomeController> {
                               ),
                               Expanded(
                                 child: Container(
-                                  height: double.infinity, 
-                                  width: double.infinity, 
+                                  height: double.infinity,
+                                  width: double.infinity,
                                   child: Image.asset(
-                                    'assets/images/shopping.png', 
-                                  fit: BoxFit.cover,
+                                    'assets/images/shopping.png',
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -123,11 +132,11 @@ class HomeView extends GetView<HomeController> {
                               ),
                               Expanded(
                                 child: Container(
-                                  height: double.infinity, 
-                                  width: double.infinity, 
+                                  height: double.infinity,
+                                  width: double.infinity,
                                   child: Image.asset(
-                                    'assets/images/shopping.png', 
-                                  fit: BoxFit.cover,
+                                    'assets/images/shopping.png',
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -135,11 +144,11 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                    
+
                       // Padding(
                       //   padding: const EdgeInsets.all(8.0),
                       //   child: Container(
-                         
+
                       //     width: MediaQuery.of(context).size.width * 0.7,
                       //     padding: EdgeInsets.all(20),
                       //     decoration: BoxDecoration(
@@ -178,76 +187,188 @@ class HomeView extends GetView<HomeController> {
                           // Handle your onTap here.
                         },
                         child: Text(
-                                 "See All",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green),
-                                  ),
+                          "See All",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                     SizedBox(
-                    
-          height: 35,
-           child: Padding(
-             padding: const EdgeInsets.only(left: 20),
-             child: ListView(
-                scrollDirection: Axis.horizontal,
-                
-                children: [
-                  Categories(categoryName: 'All'),
-                  Categories(categoryName: 'Mobile'),
-                  Categories(categoryName: 'Tv'),
-                  Categories(categoryName: 'Tab'),
-                  Categories(categoryName: 'Watch'),
-                  Categories(categoryName: 'Laptop'),
-                ],
-             ),
-           ),
-                     ),    
-                  
-                SizedBox(height: 10),
-                  
-                Padding(
-                      padding: EdgeInsets.only(
-                          top: 10, bottom: 90, left: 10, right: 10),
-                      child: GridView.count(
-                        scrollDirection: Axis.vertical,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 5.0,
-                        mainAxisSpacing: 5.0,
-                        shrinkWrap: true,
-                        childAspectRatio:
-                            MediaQuery.of(context).size.width < 600 ? 0.57 : 1,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: List.generate(10, (index) {
-                        
+                SizedBox(
+                  height: 35,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Obx(() => ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Categories(
+                              categoryName: 'All',
+                              isSelected:
+                                  controller.selectedCategory.value == 'All',
+                              onPressed: (p0) {
+                                controller.selectCategory(p0);
 
-                          // Your code here
-                         return  Stack(
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.width,
-                                width: MediaQuery.of(context).size.width,
-                                child: InkWell(
-                                  onTap: () {
-                                    Get.to(() => DetailPageView());
-                                  },
-                                  child: ProductCard(
-                                   Id: index,
-                                  ),
+                                controller.onReady();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  controller.onReady();
+                                });
+                              },
+                            ),
+                            Categories(
+                              categoryName: 'Cotton Candy ',
+                              isSelected: controller.selectedCategory.value ==
+                                  'Cotton Candy ',
+                              onPressed: (p0) {
+                                controller.selectCategory(p0);
+                                controller.onReady();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  controller.onReady();
+                                });
+                              },
+                            ),
+                            Categories(
+                              categoryName: 'Pop Corn ',
+                              isSelected: controller.selectedCategory.value ==
+                                  'Pop Corn ',
+                              onPressed: (p0) {
+                                controller.selectCategory(p0);
+                                controller.onReady();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  controller.onReady();
+                                });
+                              },
+                            ),
+                            Categories(
+                              categoryName: 'Dry Fruits',
+                              isSelected: controller.selectedCategory.value ==
+                                  'Dry Fruits',
+                              onPressed: (p0) {
+                                controller.selectCategory(p0);
+                                controller.onReady();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  controller.onReady();
+                                });
+                              },
+                            ),
+                            Categories(
+                              categoryName: 'Curry Powders',
+                              isSelected: controller.selectedCategory.value ==
+                                  'Curry Powders',
+                              onPressed: (p0) {
+                                controller.selectCategory(p0);
+                                controller.onReady();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  controller.onReady();
+                                });
+                              },
+                            ),
+                            Categories(
+                              categoryName: 'Spices',
+                              isSelected:
+                                  controller.selectedCategory.value == 'Spices',
+                              onPressed: (p0) {
+                                controller.selectCategory(p0);
+                                controller.onReady();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  controller.onReady();
+                                });
+                              },
+                            ),
+                            Categories(
+                              categoryName: 'Kerala Special',
+                              isSelected: controller.selectedCategory.value ==
+                                  'Kerala Special',
+                              onPressed: (p0) {
+                                controller.selectCategory(p0);
+                                controller.onReady();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  controller.onReady();
+                                });
+                              },
+                            ),
+                          ],
+                        )),
+                  ),
+                ),
+                SizedBox(height: 10),
+                StreamBuilder(
+                    stream: controller.fetchCustomerProductByCat,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              top: 10, bottom: 90, left: 10, right: 10),
+                          child: snapshot.data!.products!.isEmpty
+                              ? Container()
+                              : GridView.count(
+                                  scrollDirection: Axis.vertical,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 5.0,
+                                  mainAxisSpacing: 5.0,
+                                  shrinkWrap: true,
+                                  childAspectRatio:
+                                      MediaQuery.of(context).size.width < 600
+                                          ? 0.57
+                                          : 1,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: List.generate(
+                                      snapshot.data!.products!.length, (index) {
+                                    final a = snapshot.data!.products![index];
+                                    // Your code here
+                                    return Stack(
+                                      children: [
+                                        SizedBox(
+                                          height:
+                                              MediaQuery.of(context).size.width,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Get.to(() => DetailPageView(),
+                                                  arguments: a.sId.toString());
+                                            },
+                                            child: StreamBuilder(
+                                              stream: controller
+                                                  .fetchCustomerProductLikede,
+                                              builder: (context, snapshot) {
+                                                return ProductCard(
+                                                  name: a.name ?? '',
+                                                  price: a.price ?? '',
+                                                  disprice: a.discount ?? '',
+                                                  image: a.image?[0] ?? '',
+                                                  onPressed: () async {
+                                                    controller
+                                                        .onlikeProduct(
+                                                            a.sId.toString())
+                                                        .then((_) async {
+                                                      // Call the uploadImages function to upload the selected images
+                                                      await controller
+                                                          .fetchCustomerProductLiked();
+                                                    });
+
+                                                    print('aaaaaaaaa');
+                                                  },
+                                                  productId: a.sId.toString(),
+                                                  likedId: snapshot
+                                                      .data!.likedProducts!,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                    // Replace Container() with your desired widget
+                                  }),
                                 ),
-                              ),
-                              
-                             
-                            ],
-                          );
-                          // Replace Container() with your desired widget
-                        }),
-                      ),
-                    )
+                        );
+                      }
+                    }),
               ],
             ),
           ),

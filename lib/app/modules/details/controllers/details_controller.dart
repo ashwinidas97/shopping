@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
+import 'package:shopping/app/networks/network_model/res/customer_get_single_product.dart';
+import 'package:shopping/app/networks/repo/customer_product_repo.dart';
 
 class DetailsController extends GetxController {
-  //TODO: Implement DetailsController
-
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +18,9 @@ class DetailsController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  Future<CustomerGetSingleProductRes?> featchSingleProduct(id) {
+    final CustomerProductRepo repo = CustomerProductRepo();
+    final response = repo.getCustomerSingleProduct(id);
+    return response;
+  }
 }

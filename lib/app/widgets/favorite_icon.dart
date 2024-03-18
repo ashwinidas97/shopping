@@ -1,38 +1,38 @@
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shopping/app/modules/home/controllers/home_controller.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:shopping/app/modules/home/controllers/home_controller.dart';
 
-class FavoriteIcon extends StatelessWidget {
-final int id;
+// class FavoriteIcon extends StatelessWidget {
+// final int id;
 
-  const FavoriteIcon({
-    Key? key, required this.id,
+//   const FavoriteIcon({
+//     Key? key, required this.id,
   
-  }) : super(key: key);
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      builder: (controller) {
-        print(id);
-        return  Obx(() {
-      final isFavorite = controller.isFavorite(id);
-      return IconButton(
-        icon: Icon(
-          isFavorite.value ?
-           Icons.favorite 
-           :
-            Icons.favorite_border,
-          color: Colors.red, 
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetBuilder<HomeController>(
+//       builder: (controller) {
+//         print(id);
+//         return  Obx(() {
+    
+//       return IconButton(
+//         icon: Icon(
+//          ?
+//            Icons.favorite 
+//            :
+//             Icons.favorite_border,
+//           color: Colors.red, 
           
-        ),
-        onPressed: () {
-          controller.toggleFavorite(id);
-        },
-      );
-    });
-  });
-  }
-}
+//         ),
+//         onPressed: () {
+//           controller.toggleFavorite(id);
+//         },
+//       );
+//     });
+//   });
+//   }
+// }
 
